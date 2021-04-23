@@ -10,7 +10,7 @@ class Document extends Model
     use HasFactory;
 
      protected $fillable = [
-        'name', 'theme_id',	'language' , 'format' , 'path' , 'user_id', 'folder_id'
+        'name', 'theme_id','technology_id' ,	'language' , 'format' , 'path' , 'user_id', 'folder_id'
         
     ];
 }

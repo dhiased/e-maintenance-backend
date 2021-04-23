@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Theme;
+use App\Models\Folder;
 use App\Models\Document;
+use App\Models\Technology;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\File\File;
 
 class DocumentController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -32,8 +37,8 @@ class DocumentController extends Controller
         $themes = DB::table('themes')->get();
         $technologies = DB::table('technologies')->get();
         $users = DB::table('users')->get();
-        $folders = DB::table('folders')->get();
-
+        // $folders = DB::table('folders')->get();
+        $folders = Folder::all();
     }
 
     /**
@@ -51,8 +56,11 @@ class DocumentController extends Controller
             'format',
 
             'path',
+            
 
             'user_id' => 'required',
+            'theme_id'=> 'required',
+            'technology_id'=> 'required',
 
             'folder_id' => 'required',
 
@@ -62,9 +70,23 @@ class DocumentController extends Controller
 
         $name = pathinfo($request->file('file')->getClientOriginalName(), PATHINFO_FILENAME);
         $ex = $request->file('file')->getClientOriginalName();
-    
+
         $extension = \File::extension($ex);
-        $path = $request->file('file')->store('public/files');
+        $destination_path = 'public/';
+
+        // $folder = new Folder ;
+        // $folder->name = $name;
+        // $theme = Theme::all();
+        // $technology = Technology::all();
+
+        $folder = Folder::FindOrfail($request->folder_id);
+        $technology = Technology::FindOrfail($request->technology_id);
+        $theme = Theme::FindOrfail($request->theme_id);
+
+        // $t = Theme::FindOrfail($request->theme_id);
+        
+        $my_path = ($destination_path .'/'. $technology->name .'/'. $theme->name .'/'. $folder->name);
+        $path = $request->file('file')->store($my_path);
 
         $document = new Document;
 
@@ -122,6 +144,8 @@ class DocumentController extends Controller
             'user_id' => 'required',
 
             'folder_id' => 'required',
+            'theme_id'=> 'required',
+            'technology_id'=> 'required',
 
         ]);
 

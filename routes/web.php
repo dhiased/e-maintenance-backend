@@ -64,7 +64,10 @@ Route::resource('folders', FolderController::class);
 
 
 Route::get('/', function () {
-    return view('auth.login');
+    if (auth()->user()){
+        auth()->user()->assignRoles('admin');
+    }
+       return view('auth.login');
 });
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
