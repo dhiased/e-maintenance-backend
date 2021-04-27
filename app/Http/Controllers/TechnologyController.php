@@ -8,6 +8,13 @@ use View;
 
 class TechnologyController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth:api']);
+        $this->middleware('roles:admin|manager')->except('index');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -114,7 +121,7 @@ class TechnologyController extends Controller
     public function destroy(Technology $technology)
     {
         $technology->delete();
-return response ('Technology deleted successfully' , 200);
+        return response('Technology deleted successfully', 200);
         return redirect()->route('technologies.index')
             ->with('success', 'Technology deleted successfully');
 

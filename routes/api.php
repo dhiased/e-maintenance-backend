@@ -49,36 +49,41 @@ Route::group([
 
 //ADMIN SECTION **************
 Route::group(['middleware' => 'api', 'prefix' => 'admin'], function () {
+
+    //Count
+    Route::get('myallnumbers', 'Admin\UsersController@myAllAdminsManagersUsersNumbers');
+    Route::get('myadminsnumbers', 'Admin\UsersController@myAdminsNumbers');
+    Route::get('mymanagersnumbers', 'Admin\UsersController@myManagersNumbers');
+    Route::get('myusersnumbers', 'Admin\UsersController@myUsersNumbers');
+
+    //End Count
+
     //Show
+    Route::get('showanyuser/{id}', 'Admin\UsersController@show');
     Route::get('showall', 'Admin\UsersController@showAllAdminsManagersUsers');
     Route::get('showadmins', 'Admin\UsersController@showAllAdmins');
     Route::get('showmanagers', 'Admin\UsersController@showAllManagers');
     Route::get('showusers', 'Admin\UsersController@showAllUsers');
     //End show
-    
+
     //Crud Admin
     Route::post('createadmin', 'Admin\UsersController@createAdmin');
     Route::put('updateadmin/{id}', 'Admin\UsersController@updateAdmin');
     Route::delete('destroyadmin/{id}', 'Admin\UsersController@destroyAdmin');
-    //End Crud 
-    
+    //End Crud
 
     //Crud Manager
-Route::post('createmanager', 'Admin\UsersController@createManager');
-Route::put('updatemanager/{id}', 'Admin\UsersController@updateManager');
-Route::delete('destroymanager/{id}', 'Admin\UsersController@destroyManager');
-//End Crud Manager
+    Route::post('createmanager', 'Admin\UsersController@createManager');
+    Route::put('updatemanager/{id}', 'Admin\UsersController@updateManager');
+    Route::delete('destroymanager/{id}', 'Admin\UsersController@destroyManager');
+    //End Crud Manager
 
+    //Crud User
+    Route::post('createuser', 'Admin\UsersController@createUser');
+    Route::put('updateuser/{id}', 'Admin\UsersController@updateUser');
+    Route::delete('destroyuser/{id}', 'Admin\UsersController@destroyUser');
+    //End Crud User
 
-
-//Crud User
-Route::post('createuser', 'Admin\UsersController@createUser');
-Route::put('updateuser/{id}', 'Admin\UsersController@updateUser');
-Route::delete('destroyuser/{id}', 'Admin\UsersController@destroyUser');
-//End Crud User
-
-
-    
     //Assign
     Route::get('adminmanager', 'Admin\UsersController@removeAdminAssignManager');
     Route::get('adminuser', 'Admin\UsersController@removeAdminAssignUser');

@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Theme;
-use App\Models\Folder;
 use App\Models\Document;
+use App\Models\Folder;
 use App\Models\Technology;
+use App\Models\Theme;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\File\File;
 
 class DocumentController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware(['auth:api']);
+        $this->middleware('roles:admin|manager')->except('index');
+    }
 
     /**
      * Display a listing of the resource.
@@ -20,7 +25,7 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        return view('file-upload');
+        // return view('file-upload');
 
         $data = Document::all();
         return response($data);
@@ -56,15 +61,14 @@ class DocumentController extends Controller
             'format',
 
             'path',
-            
 
             'user_id' => 'required',
-            'theme_id'=> 'required',
-            'technology_id'=> 'required',
+            'theme_id' => 'required',
+            'technology_id' => 'required',
 
             'folder_id' => 'required',
 
-            'file' => 'required|mimes:csv,txt,xlx,xls,pdf',
+            'file' => 'required|mimes:csv,txt,xlx,xls,pdf,jpg,jpeg,png,gif,ico,doc,docx,ppt,pptx,pps,ppsx,odt,xlsx,psd,mp3,m4a,ogg,wav,mp4,m4v,mov,wmv,avi,mpg,ogv,3gp,3g2',
 
         ]);
 
@@ -84,13 +88,17 @@ class DocumentController extends Controller
         $theme = Theme::FindOrfail($request->theme_id);
 
         // $t = Theme::FindOrfail($request->theme_id);
-        
-        $my_path = ($destination_path .'/'. $technology->name .'/'. $theme->name .'/'. $folder->name);
-        $path = $request->file('file')->store($my_path);
+        // $mydate = Carbon::now();
+
+        $mydate = Carbon::now()->toDateTimeString();
+        $now = date('F j, Y, h-i-s a');
+
+        $my_path = ($destination_path . '/' . $technology->name . '/' . $theme->name . '/' . $folder->name);
+        $path = $request->file('file')->storeAs($my_path, $request->name . '-' . $ex . '-' . $now);
 
         $document = new Document;
 
-        $document->name = $name;
+        $document->name = $request->name;
         $document->path = $path;
         $document->language = $request->language;
         $document->format = $extension;
@@ -144,8 +152,8 @@ class DocumentController extends Controller
             'user_id' => 'required',
 
             'folder_id' => 'required',
-            'theme_id'=> 'required',
-            'technology_id'=> 'required',
+            'theme_id' => 'required',
+            'technology_id' => 'required',
 
         ]);
 

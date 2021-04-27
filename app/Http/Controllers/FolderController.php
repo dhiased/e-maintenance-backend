@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class FolderController extends Controller
 {
+     public function __construct()
+    {
+        $this->middleware(['auth:api']);
+        $this->middleware('roles:admin|manager')->except('index');
+    }
     /**
      * Display a listing of the resource.
      *

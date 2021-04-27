@@ -12,14 +12,52 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->middleware(['auth:api']);
-        $this->middleware('roles:admin');
-        // $this->middleware(['middleware' => 'api', 'prefix' => 'admin']);
+        $this->middleware('roles:admin'); // ->except('show');
+
+        // $this->middleware('roles:manager')->only('show');
 
     }
 
     // ****** ADMIN Section *******
+    //Count****
+     public function myAllAdminsManagersUsersNumbers()
+    {
 
+        $data = User::all()->count();
+        return response($data, 200);
+
+    }
+    public function myAdminsNumbers()
+    {
+        $admins = User::IsAdmin()->get()->count();
+        return $admins;
+
+    }
+    public function myManagersNumbers()
+    {
+
+        $managers = User::IsManager()->get()->count();
+        return $managers;
+
+    }
+     public function myUsersNumbers()
+    {
+
+        $users = User::IsUser()->get()->count();
+        return $users;
+
+    }
+
+    //END of Count
     //SHOW*****
+
+    public function show($id)
+    {
+        return auth()->user();
+        $anyUser = User::findOrFail($id);
+        return $anyUser;
+    }
+
     public function showAllAdminsManagersUsers()
     {
 
@@ -177,8 +215,6 @@ class UsersController extends Controller
     }
     //END Create_Update_Delete_MANAGER****
 
-
-
 //Create_Update_Delete_User ****
     public function createUser(Request $request)
     {
@@ -240,10 +276,6 @@ class UsersController extends Controller
     }
     //END Create_Update_Delete_USER****
 
-
-
-
-    
     // ASSIGN
     public function removeAdminAssignManager(Request $request, User $user)
     {
