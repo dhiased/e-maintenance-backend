@@ -61,6 +61,7 @@ Route::resource('folders', FolderController::class);
 
 
 
+Route::get('/datatable', 'HomeController@datatable')->name('datatable');
 
 
 Route::get('/', function () {

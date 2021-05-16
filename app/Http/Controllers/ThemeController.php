@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class ThemeController extends Controller
 {
 
-     public function __construct()
+    public function __construct()
     {
         $this->middleware(['auth:api']);
         $this->middleware('roles:admin|manager')->except('index');
@@ -52,7 +52,7 @@ class ThemeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|unique:themes,name',
             'technology_id' => 'required',
 
         ]);
@@ -120,7 +120,7 @@ class ThemeController extends Controller
     public function destroy(Theme $theme)
     {
         $theme->delete();
-        return response('Theme deleted successfully',200);
+        return response('Theme deleted successfully', 200);
         return redirect()->route('themes.index')
             ->with('success', 'Theme deleted successfully');
 

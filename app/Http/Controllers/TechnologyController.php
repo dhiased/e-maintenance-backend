@@ -11,7 +11,6 @@ class TechnologyController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth:api']);
         $this->middleware('roles:admin|manager')->except('index');
     }
 
@@ -56,14 +55,14 @@ class TechnologyController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|unique:technologies,name',
 
         ]);
 
         $data = Technology::create($request->all());
         return response($data);
-        return redirect()->route('technologies.index')
-            ->with('success', 'Technology created successfully.');
+        // return redirect()->route('technologies.index')
+        //     ->with('success', 'Technology created successfully.');
 
     }
 

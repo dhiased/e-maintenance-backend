@@ -19,4 +19,10 @@ class Folder extends Model
     {
         return $this->hasMany(Document::class);
     }
+
+    public function theme()
+    {
+        return $this->belongsTo(Theme::class);
+    }
+
 }

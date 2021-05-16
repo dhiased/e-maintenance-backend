@@ -10,12 +10,18 @@ class Theme extends Model
 {
     use HasFactory;
 
-     protected $fillable = [
-        'name', 'technology_id'
+    protected $fillable = [
+        'name', 'technology_id',
     ];
-    
+
     public function folders()
     {
         return $this->hasMany(Folder::class);
     }
+
+    public function technology()
+    {
+        return $this->belongsTo(Technology::class);
+    }
+
 }

@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-Route::group(['middleware' => 'jwt.auth'], function () {
+Route::group([
+    'middleware' => 'jwt.auth',
+], function () {
     Route::resource('themes', ThemeController::class);
     Route::resource('technologies', TechnologyController::class);
     Route::resource('folders', FolderController::class);
@@ -46,6 +48,7 @@ Route::group([
 // });
 
 // USERS Controller
+Route::get('document', 'DocumentControllers@index');
 
 //ADMIN SECTION **************
 Route::group(['middleware' => 'api', 'prefix' => 'admin'], function () {
