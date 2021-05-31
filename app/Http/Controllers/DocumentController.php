@@ -8,9 +8,10 @@ use App\Models\Technology;
 use App\Models\Theme;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\File\File;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\File\File;
 
+// use Illuminate\Support\Facades\File;
 
 class DocumentController extends Controller
 {
@@ -30,7 +31,7 @@ class DocumentController extends Controller
         // return view('file-upload');
         // return Document::with('folder.theme')->get();
         // return ($request->all());
-        $data = Document::filter($request->all())->with('folder.theme.technology')->get();
+        $data = Document::filter($request->all())->with('folder.theme.technology', 'user')->get();
         return response(($data));
 
     }
@@ -58,21 +59,21 @@ class DocumentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            // 'name' => 'required',
+            'name',
             'language' => 'required',
 
             'format',
 
             'path',
 
-            'user_id' => 'required',
+            'user_id',
             // 'technology_id' => 'required',
 
             'folder_id' => "required_if:folder_name,==,null", //required if folder_name == null
             'folder_name' => 'required_if:folder_id,==,null|unique:folders,name', // required if folder_id == null
             'theme_id' => 'required_if:folder_id,==,null', //required if folder_id == null
 
-            'file' => 'required|mimes:csv,txt,xlx,xls,pdf,jpg,jpeg,png,gif,ico,doc,docx,ppt,pptx,pps,ppsx,odt,xlsx,psd,mp3,m4a,ogg,wav,mp4,m4v,mov,wmv,avi,mpg,ogv,3gp,3g2',
+            'file' => 'required',
 
         ]);
         if ($request->folder_id != null) {
@@ -80,7 +81,7 @@ class DocumentController extends Controller
             $ex = $request->file('file')->getClientOriginalName();
 
             $extension = \File::extension($ex);
-            $destination_path = 'public/';
+            $destination_path = 'public';
 
             // $folder = new Folder ;
             // $folder->name = $name;
@@ -98,15 +99,17 @@ class DocumentController extends Controller
             $now = date('F j, Y, h-i-s a');
 
             $my_path = ($destination_path . '/' . $technology->name . '/' . $theme->name . '/' . $folder->name);
-            $path = $request->file('file')->storeAs($my_path, $ex . '-' . $now);
-
+            $path = $request->file('file')->storeAs($my_path, $name . '-' . $now . '.' . $extension);
+            $pathWithOutPublic = substr($path, 7);
             $document = new Document;
 
-            $document->name = $request->name;
-            $document->path = $path;
+            $document->name = $name;
+            $document->path = $pathWithOutPublic;
             $document->language = $request->language;
             $document->format = $extension;
-            $document->user_id = $request->user_id;
+            // $document->user_id = $request->user_id;
+            $document->user_id = auth()->user()->id;
+
             $document->folder_id = $request->folder_id;
 
             $document->save();
@@ -135,18 +138,25 @@ class DocumentController extends Controller
 
             $document = new Document;
 
-            $document->name = $request->name;
+            $document->name = $name;
             $document->path = $path;
             $document->language = $request->language;
             $document->format = $extension;
-            $document->user_id = $request->user_id;
+            // $document->user_id = $request->user_id;
+            $document->user_id = auth()->user()->id;
+
             $document->folder_id = $myFolder->id;
 
             $document->save();
 
         }
         // return redirect('document')->with('status', 'File Has been uploaded successfully in laravel 8');
-        return 'done';
+        return response()->json([
+            'success' => true,
+            'message' => 'Document created successfully',
+            'data' => $document,
+        ], 200);
+
     }
 
     /**
@@ -181,19 +191,23 @@ class DocumentController extends Controller
     public function update(Request $request, Document $document)
     {
         $request->validate([
-            // 'name' => 'required',
+            'name' => 'required',
             'language' => 'required',
 
-            'format' => 'required',
+            // 'format' => 'required',
 
-            'path' => 'required',
+            // 'path' => 'required',
 
-            'user_id' => 'required',
+            // 'user_id' => 'required',
 
         ]);
 
         $document->update($request->all());
-        return response($document);
+        return response()->json([
+            'success' => true,
+            'message' => 'Document updated successfully',
+            'data' => $document,
+        ], 200);
 
     }
 
@@ -203,13 +217,19 @@ class DocumentController extends Controller
      * @param  \App\Models\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Document $document)
+    public function destroy(Document $document, Request $request)
     {
-        $document->delete();
 
-        Storage::delete($document);
+        if (Storage::exists($document->path)) {
+            Storage::delete($document->path);
+            $document->delete();
+            return response('Document deleted successfully', 200);
 
-        return response('Document deleted successfully', 200);
+        } else {
+            return response('Document does not exists.', 200);
+
+        }
+        // File::delete($document);
 
     }
 }
