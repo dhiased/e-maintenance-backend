@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class FolderController extends Controller
 {
-     public function __construct()
+    public function __construct()
     {
         $this->middleware(['auth:api']);
         $this->middleware('roles:admin|manager')->except('index');
@@ -18,11 +18,23 @@ class FolderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Folder::all();
+        $data = Folder::filter($request->all())->with('theme')->get();
+
         return response($data);
         return view('folders.index', compact('data'));
+
+    }
+
+    public function getFoldersByThemes(Request $request)
+    {
+
+        $data = Folder::where('theme_id', $request->theme_id)->get();
+
+        return response($data, 200);
+
+        return view('themes.index', compact('data'));
 
     }
 
@@ -103,7 +115,7 @@ class FolderController extends Controller
         ]);
 
         $folder->update($request->all());
-return response ($folder);
+        return response($folder);
         return redirect()->route('folders.index')
             ->with('success', 'Folder updated successfully');
 
@@ -118,7 +130,7 @@ return response ($folder);
     public function destroy(Folder $folder)
     {
         $folder->delete();
-return response ('Folder deleted successfully' , 200);
+        return response('Folder deleted successfully', 200);
         return redirect()->route('folders.index')
             ->with('success', 'Folder deleted successfully');
 

@@ -125,7 +125,7 @@ class DocumentController extends Controller
             $ex = $request->file('file')->getClientOriginalName();
 
             $extension = \File::extension($ex);
-            $destination_path = 'public/';
+            $destination_path = 'public';
 
             $theme = $myFolder->theme()->first();
             $technology = $theme->technology()->first();
@@ -134,14 +134,15 @@ class DocumentController extends Controller
             $now = date('F j, Y, h-i-s a');
 
             $my_path = ($destination_path . '/' . $technology->name . '/' . $theme->name . '/' . $myFolder->name);
-            $path = $request->file('file')->storeAs($my_path, $ex . '-' . $now);
-
+            $path = $request->file('file')->storeAs($my_path, $name . '-' . $now . '.' . $extension);
+            $pathWithOutPublic = substr($path, 7);
             $document = new Document;
 
             $document->name = $name;
-            $document->path = $path;
+            $document->path = $pathWithOutPublic;
             $document->language = $request->language;
             $document->format = $extension;
+
             // $document->user_id = $request->user_id;
             $document->user_id = auth()->user()->id;
 

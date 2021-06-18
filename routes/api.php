@@ -47,8 +47,13 @@ Route::group([
 
 // });
 
+//getThemesByTech
+Route::get('getthemes', 'ThemeController@getThemesByTech');
+//getFoldersByThemes
+Route::get('getfolders', 'FolderController@getFoldersByThemes');
+
 // USERS Controller
-Route::get('document', 'DocumentControllers@index');
+Route::get('document', 'DocumentController@index');
 
 //ADMIN SECTION **************
 Route::group(['middleware' => 'api', 'prefix' => 'admin'], function () {

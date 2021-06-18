@@ -19,7 +19,7 @@ class TechnologyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // get all the technologies
         // $technologies = Technology::all();
@@ -27,7 +27,7 @@ class TechnologyController extends Controller
         // load the view and pass the technologies
         // return view('index', compact('technologies'));
 
-        $data = Technology::all();
+        $data = Technology::filter($request->all())->get();
         return response($data, 200);
 
         return view('technologies.index', compact('data'))

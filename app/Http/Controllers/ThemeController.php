@@ -20,11 +20,22 @@ class ThemeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Theme::all();
+        $data = Theme::filter($request->all())->with('technology')->get();
 
         return response($data, 200);
+        return view('themes.index', compact('data'));
+
+    }
+
+    public function getThemesByTech(Request $request)
+    {
+
+        $data = Theme::where('technology_id', $request->technology_id)->get();
+
+        return response($data, 200);
+
         return view('themes.index', compact('data'));
 
     }
