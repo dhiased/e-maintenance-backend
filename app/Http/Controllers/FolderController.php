@@ -20,7 +20,7 @@ class FolderController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Folder::filter($request->all())->with('theme')->get();
+        $data = Folder::filter($request->all())->with('theme.technology')->get();
 
         return response($data);
         return view('folders.index', compact('data'));

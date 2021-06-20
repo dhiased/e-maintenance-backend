@@ -8,8 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use App\Http\Controllers\Admin;
-
 
 // class User extends Authenticatable
 // {
@@ -91,7 +89,9 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'remember_token',
     ];
-
+    protected $with = [
+        'roles',
+    ];
     /**
      * The attributes that should be cast to native types.
      *
