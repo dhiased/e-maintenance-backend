@@ -36,12 +36,21 @@ class DocumentController extends Controller
 
     }
 
+    public function documentCounter()
+    {
+
+        $data = Document::all()->count();
+        return response($data, 200);
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
+    //
     {
         $themes = DB::table('themes')->get();
         $technologies = DB::table('technologies')->get();

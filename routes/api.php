@@ -64,6 +64,8 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function () {
     Route::get('mymanagersnumbers', 'Admin\UsersController@myManagersNumbers');
     Route::get('myusersnumbers', 'Admin\UsersController@myUsersNumbers');
 
+    Route::get('documentCounter', 'DocumentController@documentCounter');
+
     //End Count
 
     //Show

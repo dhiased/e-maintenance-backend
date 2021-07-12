@@ -18,9 +18,17 @@ class UsersController extends Controller
 
     }
 
+    public function index(Request $request)
+    {
+
+        $data = User::filter($request->all())->get();
+        return response($data, 200);
+
+    }
+
     // ****** ADMIN Section *******
     //Count****
-     public function myAllAdminsManagersUsersNumbers()
+    public function myAllAdminsManagersUsersNumbers()
     {
 
         $data = User::all()->count();
@@ -40,7 +48,7 @@ class UsersController extends Controller
         return $managers;
 
     }
-     public function myUsersNumbers()
+    public function myUsersNumbers()
     {
 
         $users = User::IsUser()->get()->count();
@@ -66,26 +74,29 @@ class UsersController extends Controller
 
     }
 
-    public function showAllAdmins()
+    public function showAllAdmins(Request $request)
     {
-        $admins = User::IsAdmin()->get();
-        return $admins;
+        $data = User::IsAdmin()->filter($request->all())->get();
+
+        return $data;
 
     }
 
-    public function showAllManagers()
+    public function showAllManagers(Request $request)
     {
 
-        $managers = User::IsManager()->get();
-        return $managers;
+        $data = User::IsManager()->filter($request->all())->get();
+
+        return $data;
 
     }
 
-    public function showAllUsers()
+    public function showAllUsers(Request $request)
     {
 
-        $users = User::IsUser()->get();
-        return $users;
+        $data = User::IsUser()->filter($request->all())->get();
+
+        return $data;
 
     }
     //END SHOW****
@@ -129,13 +140,19 @@ class UsersController extends Controller
             'last_name' => 'required',
             'registration_number' => 'required',
             'profession' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
+            'email' => 'email',
 
         ]);
 
         $user = User::findOrFail($id);
         $user->update($request->all());
+        if ($request->password) {
+            $user->update([
+                'password' => bcrypt($request['password']),
+
+            ]);
+        }
+
         return response()->json([
             'success' => true, 'data' => 'Admin updated successfully', $user,
         ]);
@@ -190,13 +207,18 @@ class UsersController extends Controller
             'last_name' => 'required',
             'registration_number' => 'required',
             'profession' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
+            'email' => 'email',
 
         ]);
 
         $user = User::findOrFail($id);
         $user->update($request->all());
+        if ($request->password) {
+            $user->update([
+                'password' => bcrypt($request['password']),
+
+            ]);
+        }
         return response()->json([
             'success' => true, 'data' => 'Manager updated successfully', $user,
         ]);
@@ -251,13 +273,19 @@ class UsersController extends Controller
             'last_name' => 'required',
             'registration_number' => 'required',
             'profession' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
+            'email' => 'email',
 
         ]);
 
         $user = User::findOrFail($id);
         $user->update($request->all());
+        if ($request->password) {
+            $user->update([
+                'password' => bcrypt($request['password']),
+
+            ]);
+        }
+
         return response()->json([
             'success' => true, 'data' => 'User updated successfully', $user,
         ]);
