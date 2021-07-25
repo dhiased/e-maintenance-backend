@@ -23,6 +23,8 @@ Route::group([
     Route::resource('technologies', TechnologyController::class);
     Route::resource('folders', FolderController::class);
     Route::resource('documents', DocumentController::class);
+    Route::resource('reports', ReportController::class);
+
 });
 Route::group([
 
@@ -46,6 +48,9 @@ Route::group([
 //     Route::get('remove', 'UsersController@removeAdminAssignManager');
 
 // });
+
+//getReportsByTech
+Route::get('getReportsByTech', 'ReportController@getReportsByTech');
 
 //getThemesByTech
 Route::get('getthemes', 'ThemeController@getThemesByTech');

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Document;
+use App\Models\Report;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -105,6 +106,11 @@ class User extends Authenticatable implements JWTSubject
     public function documents()
     {
         return $this->hasMany(Document::class);
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
     }
 
 }

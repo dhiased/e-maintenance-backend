@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Report;
 use App\Models\Theme;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,6 +21,11 @@ class Technology extends Model
     {
         return $this->hasMany(Theme::class);
 
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
     }
     //  public function folders()
     // {
