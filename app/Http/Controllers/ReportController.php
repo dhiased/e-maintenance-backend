@@ -21,7 +21,7 @@ class ReportController extends Controller
     public function index(Request $request)
     {
 
-        $data = Report::filter($request->all())->with('technology')->get();
+        $data = Report::filter($request->all())->with('technology', 'user')->get();
 
         return response($data, 200);
 
