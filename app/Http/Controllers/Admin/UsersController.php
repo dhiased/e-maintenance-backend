@@ -130,9 +130,10 @@ class UsersController extends Controller
 
         $user->assignRole('admin');
         // return 'Admin created successfully';
-        return response()->json([
-            'success' => true, 'data' => 'Admin created successfully.', $user,
-        ]);
+        // return response()->json([
+        //     'success' => true, 'data' => 'Admin created successfully.', $user,
+        // ]);
+        return $user;
 
     }
 
@@ -155,10 +156,11 @@ class UsersController extends Controller
 
             ]);
         }
+        return $user;
 
-        return response()->json([
-            'success' => true, 'data' => 'Admin updated successfully', $user,
-        ]);
+        // return response()->json([
+        //     'success' => true, 'data' => 'Admin updated successfully', $user,
+        // ]);
 
     }
 
@@ -200,9 +202,10 @@ class UsersController extends Controller
 
         $user->assignRole('manager');
         // return 'Manager created successfully';
-        return response()->json([
-            'success' => true, 'data' => 'Manager created successfully.', $user,
-        ]);
+        // return response()->json([
+        //     'success' => true, 'data' => 'Manager created successfully.', $user,
+        // ]);
+        return $user;
 
     }
 
@@ -225,9 +228,11 @@ class UsersController extends Controller
 
             ]);
         }
-        return response()->json([
-            'success' => true, 'data' => 'Manager updated successfully', $user,
-        ]);
+        return $user;
+
+        // return response()->json([
+        //     'success' => true, 'data' => 'Manager updated successfully', $user,
+        // ]);
 
     }
 
@@ -268,7 +273,7 @@ class UsersController extends Controller
         ]);
 
         $user->assignRole('user');
-        return 'User created successfully';
+        return $user;
         // return response()->json([
         //     'success' => true, 'data' => 'User created successfully.', $user,
         // ]);
@@ -294,10 +299,11 @@ class UsersController extends Controller
 
             ]);
         }
+        return $user;
 
-        return response()->json([
-            'success' => true, 'data' => 'User updated successfully', $user,
-        ]);
+        // return response()->json([
+        //     'success' => true, 'data' => 'User updated successfully', $user,
+        // ]);
 
     }
 

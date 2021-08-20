@@ -91,8 +91,10 @@ class ReportController extends Controller
         // $report->user_id = auth()->user()->id;
 
         $data = Report::create($request->all());
+
         $data->user_id = auth()->user()->id;
         $data->save();
+        $data->setAttribute('user', $data->user);
 
         return response($data);
 

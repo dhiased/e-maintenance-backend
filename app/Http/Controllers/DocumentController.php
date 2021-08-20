@@ -122,6 +122,7 @@ class DocumentController extends Controller
             $document->folder_id = $request->folder_id;
 
             $document->save();
+            $document->setAttribute('user', $document->user);
 
         } else {
 
@@ -158,6 +159,7 @@ class DocumentController extends Controller
             $document->folder_id = $myFolder->id;
 
             $document->save();
+            $document->setAttribute('user', $document->user);
 
         }
         // return redirect('document')->with('status', 'File Has been uploaded successfully in laravel 8');
