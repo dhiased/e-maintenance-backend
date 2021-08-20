@@ -27,10 +27,24 @@ class ReportController extends Controller
 
     }
 
+    public function reportCounter()
+    {
+
+        $data = Report::all()->count();
+        return response($data, 200);
+
+    }
+
     public function getReportsByTech(Request $request)
     {
 
-        $data = Report::where('technology_id', $request->technology_id)->get();
+        $data = Report::where('technology_id', $request->technology_id)->with('user')->get();
+        // if ($request->technology_id == null) {
+        //     $data = Report::all()->get();
+
+        //     return response($data, 200);
+
+        // }
 
         return response($data, 200);
 

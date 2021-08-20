@@ -129,7 +129,10 @@ class UsersController extends Controller
         ]);
 
         $user->assignRole('admin');
-        return 'Admin created successfully';
+        // return 'Admin created successfully';
+        return response()->json([
+            'success' => true, 'data' => 'Admin created successfully.', $user,
+        ]);
 
     }
 
@@ -196,7 +199,10 @@ class UsersController extends Controller
         ]);
 
         $user->assignRole('manager');
-        return 'Manager created successfully';
+        // return 'Manager created successfully';
+        return response()->json([
+            'success' => true, 'data' => 'Manager created successfully.', $user,
+        ]);
 
     }
 
@@ -263,6 +269,9 @@ class UsersController extends Controller
 
         $user->assignRole('user');
         return 'User created successfully';
+        // return response()->json([
+        //     'success' => true, 'data' => 'User created successfully.', $user,
+        // ]);
 
     }
 

@@ -16,7 +16,7 @@ class ReportFilter extends ModelFilter
 
     public function search($string)
     {
-        $this->whereLike('name', $string);
+        $this->whereLike('title', $string);
     }
 
 }

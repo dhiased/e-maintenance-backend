@@ -15,6 +15,9 @@ class Theme extends Model
     protected $fillable = [
         'name', 'technology_id',
     ];
+    protected $with = [
+        'technology',
+    ];
 
     public function folders()
     {

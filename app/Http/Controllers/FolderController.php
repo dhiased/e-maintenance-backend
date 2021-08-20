@@ -70,6 +70,9 @@ class FolderController extends Controller
         error_log($request);
 // return $request;
         $data = Folder::create($request->all());
+        $data->setAttribute('technology', $data->technology);
+        $data->setAttribute('theme', $data->theme);
+
         return response($data);
 
         return redirect()->route('folders.index')

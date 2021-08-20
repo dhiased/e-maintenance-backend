@@ -70,10 +70,14 @@ class ThemeController extends Controller
         error_log('******************************');
         error_log($request);
         // return $request;
-        $data = Theme::create($request->all());
+        $data = Theme::create($request->all())
+        // ->with('technology')->get()
+        ;
+        $data->setAttribute('technology', $data->technology);
+
         return response($data);
-        return redirect()->route('themes.index')
-            ->with('success', 'Theme created successfully.');
+        // return redirect()->route('themes.index')
+        //     ->with('success', 'Theme created successfully.');
 
     }
 
