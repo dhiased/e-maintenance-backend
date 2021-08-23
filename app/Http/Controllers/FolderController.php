@@ -11,7 +11,7 @@ class FolderController extends Controller
     public function __construct()
     {
         $this->middleware(['auth:api']);
-        $this->middleware('roles:admin|manager')->except('index');
+        $this->middleware('roles:admin|manager')->except('index', 'getFoldersByThemes');
     }
     /**
      * Display a listing of the resource.
