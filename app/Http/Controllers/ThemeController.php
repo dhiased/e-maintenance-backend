@@ -63,7 +63,9 @@ class ThemeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:themes,name',
+            // 'name' => 'required|unique:themes,name',
+            'name' => 'required',
+
             'technology_id' => 'required',
 
         ]);
